@@ -21,6 +21,7 @@ public class InsertDialog extends javax.swing.JDialog {
     Gson gson = new Gson();
     JFileChooser fchImagenChooser;
     String path;
+    BufferedImage imagen;
     List imagenesDeMas = new ArrayList();//ArrayList para saber cuales son las imagenes repetidas
 
     
@@ -190,20 +191,30 @@ public class InsertDialog extends javax.swing.JDialog {
                 imagenesDeMas.add(imageFiles[i].getAbsoluteFile().getName());
             }
             
-            String path = fchImagenChooser.getSelectedFile().getAbsolutePath();//El path de la imagen seleccionada
-            BufferedImage imagen = ImageIO.read(new File(path));//BufferedImage de la imagen seleccionada
+            //BufferedImage imagen = ImageIO.read(new File(path));//BufferedImage de la imagen seleccionada
 
             Obra obraNueva = new Obra (txtRegistro.getText(), txtTitulo.getText(), txtYear.getText(), txtFormato.getText(), txtAutor.getText(), txtImagen.getText());//Nuevo objeto Obra con los valores escritos
             
             if(imagenesDeMas.contains(obraNueva.getImagen())){//Si la imagen seleccionada ya está en la carpeta images
                 lblAviso.setText("Error! La imagen ya existe, cambia el nombre.");
             }
-            else{//Si no lo está
-                mainF.addToLista(obraNueva);//Añadimos el nuevo objeto Obra al ArrayList "lista"
-                this.setVisible(false);
-                ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + obraNueva.getImagen()));//Guardamos la imagen en la carpeta images
-                mainF.actualizador();
-            } 
+             else{//Si no lo está
+                if (obraNueva.getRegistre() != null) {//Si el valor no es nulo
+                        mainF.addToLista(obraNueva);//Añadimos el nuevo objeto Obra al ArrayList "lista"
+                        this.setVisible(false);
+                        if (obraNueva.getImagen().equals("")){
+                            BufferedImage imagenDefecto = ImageIO.read(new File(System.getProperty("user.home") + "\\Documents\\NetBeansProjects\\PracticaFinalOpusListAlexis-main\\Gestor de Obras\\src\\spdvi\\ImagenesDefecto\\Defecto.jpg"));//BufferedImage de la imagen seleccionada
+                            ImageIO.write(imagenDefecto, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\Defecto.jpg"));//Guardamos la imagen en la carpeta images
+                            obraNueva.setImagen("Defecto.jpg");
+                        }
+                        else{
+                            String path = fchImagenChooser.getSelectedFile().getAbsolutePath();//El path de la imagen seleccionada
+                            BufferedImage imagen = ImageIO.read(new File(path));//BufferedImage de la imagen seleccionada
+                            ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + obraNueva.getImagen()));//Guardamos la imagen en la carpeta images
+                        }
+                        mainF.actualizador();
+                }                
+            }
         } 
         catch (IOException ex) {
             Logger.getLogger(InsertDialog.class.getName()).log(Level.SEVERE, null, ex);
