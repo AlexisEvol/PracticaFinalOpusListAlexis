@@ -20,18 +20,18 @@ import javax.swing.JFileChooser;
  *
  * @author alexi
  */
-public class ChangeDialog extends javax.swing.JDialog {
+public class ChangeDialog extends javax.swing.JDialog {//Clase que se activa cuando hacemos doble click sobre un valor del Jlist para poder actualizarlo
 
-    MainForm mainF;
+    MainForm mainF;//Variable del MainForm
     Gson gson = new Gson();
-    JFileChooser fchImagenChooser;
+    JFileChooser fchImagenChooser;//Variable para el fileChooser
     
     public ChangeDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         
         fchImagenChooser = new JFileChooser();
-        mainF = (MainForm) this.getParent();
+        mainF = (MainForm) this.getParent();//Le damos los valores ya recolectados en el MainForm a la variable MainF
     }
 
     
@@ -180,17 +180,18 @@ public class ChangeDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Funcion del boton cargar imagen, el cual se encargará de sacar una imagen
     private void btnCargarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarImagenActionPerformed
         // TODO add your handling code here:
         
-        int result = fchImagenChooser.showOpenDialog(this);
-        String nombre = fchImagenChooser.getSelectedFile().getName();
-        if (result == JFileChooser.APPROVE_OPTION) {
+        int result = fchImagenChooser.showOpenDialog(this);//Enseña una ventana de buscador de archivos
+        String nombre = fchImagenChooser.getSelectedFile().getName();//String con el nombre de la imagen seleccionada desde el buscador de archivos
+        if (result == JFileChooser.APPROVE_OPTION) {//Si la variable result es equivalente a seleccionar del fileChooser
             try {
-                BufferedImage bufferedImage = ImageIO.read(new File(fchImagenChooser.getSelectedFile().getAbsolutePath()));
-                ImageIcon icon = mainF.resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());
-                lblPerfil.setIcon(icon);
-                txtImagen.setText(nombre);
+                BufferedImage bufferedImage = ImageIO.read(new File(fchImagenChooser.getSelectedFile().getAbsolutePath()));//Creamos un BufferedImage de la imagen seleccionado mediante su absolute path
+                ImageIcon icon = mainF.resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());//Le hacemos un resize a esta imagen
+                lblPerfil.setIcon(icon);//setteamos el lbl con la imagen seleccionada
+                txtImagen.setText(nombre);//setteamos el txt de la imagen con su nombre
 
             }
             catch (IOException ioe) {
@@ -199,31 +200,34 @@ public class ChangeDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnCargarImagenActionPerformed
 
+    //Funcion del boton update el cual actualizará la información del objeto de la lista seleccionado
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         
-        for (Obra o: mainF.getLista()) {
-            if (o.getRegistre().equals(txtRegistro.getText())) {
+        for (Obra o: mainF.getLista()) {//recorremos la lista
+            if (o.getRegistre().equals(txtRegistro.getText())) {//si el registro de la posición de la lista es igual al que está en el txt
                 try {
+                    //Añadiremos los nuevos valores al objeto que corresponda con el seleccionado previamente
                     o.setTitol(txtTitulo.getText());
                     o.setAny(txtYear.getText());
                     o.setFormat(txtFormato.getText());
                     o.setAutor(txtAutor.getText());
                     o.setImagen(txtImagen.getText());
-                    BufferedImage imagen = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\"+txtImagen.getText()));
-                    ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));
+                    BufferedImage imagen = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\"+txtImagen.getText()));//Creamos un BufferedImage de la imagen seleccionada mediante su nombre
+                    ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));//Guardaremos la imagen del BufferedImage dentro de la carpeta images con el nombre que le corresponde
                 } catch (IOException ex) {
                     Logger.getLogger(ChangeDialog.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         this.setVisible(false);
-        mainF.actualizador();
+        mainF.actualizador();//Actualizamos la lista
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    //Cuando se abre la ventana se cargan en el txt los valores de la obra que hemos seleccionado
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
             // TODO add your handling code here:
-            
+            //rellenamos los txt con los valores del objeto seleccionado
             txtImagen.setText(mainF.getSelectedObra().getImagen());
             txtRegistro.setText(mainF.getSelectedObra().getRegistre());
             txtYear.setText(mainF.getSelectedObra().getAny());
@@ -231,6 +235,7 @@ public class ChangeDialog extends javax.swing.JDialog {
             txtTitulo.setText(mainF.getSelectedObra().getTitol());
             txtFormato.setText(mainF.getSelectedObra().getFormat());
 
+            //Como otras veces, hacemos un BufferedImage de la imagen del objeto seleccionado y luego la setteamos en el lbl.
             BufferedImage bufferedImage = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + mainF.getSelectedObra().getImagen()));
             ImageIcon icon = resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());
             lblPerfil.setIcon(icon);

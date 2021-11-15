@@ -102,28 +102,28 @@ public class LimpiarDialog extends javax.swing.JDialog {
         this.setVisible(false);
     }//GEN-LAST:event_btnNoActionPerformed
 
-    public void comprobante(){
-        List imagenesDeMas = new ArrayList();
-        File imagesFolder = new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images");
-        File[] imageFiles = imagesFolder.listFiles();
+    public void comprobante(){//Metodo que borrará los archivos que no estén en ninguna posición de la lista
+        List imagenesDeMas = new ArrayList();//ArrayList para guardar las imagenes que sobran
+        File imagesFolder = new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images");//Path de la carpeta images
+        File[] imageFiles = imagesFolder.listFiles();//Variable para guardar las imagenes en un array 
         
-            for(int i = 0; i < imageFiles.length;i++){
+            for(int i = 0; i < imageFiles.length;i++){//Metemos todas las imagenes de la carpeta dentro de imagenesDeMas
                 imagenesDeMas.add(imageFiles[i].getAbsoluteFile().getName());
             }
 
-            for(int i = 0; i < mainF.getLista().size();i++){
-                for(int j = 0; j < imageFiles.length; j++){
-                    if(mainF.getLista().get(i).getImagen().equals(imageFiles[j].getAbsoluteFile().getName())){
-                        imagenesDeMas.remove(mainF.getLista().get(i).getImagen());
+            for(int i = 0; i < mainF.getLista().size();i++){//Leemos las imagenes del ArrayList "lista"
+                for(int j = 0; j < imageFiles.length; j++){//leemos la cantidad de imagenes en la carpeta
+                    if(mainF.getLista().get(i).getImagen().equals(imageFiles[j].getAbsoluteFile().getName())){//Si la imagen de la posición actual es igual a alguna imagen de la carpeta
+                        imagenesDeMas.remove(mainF.getLista().get(i).getImagen());//quitamos esa imagen de la lista ya que se está usando
                         imagenesDeMas.remove("desktop.ini");
                     }
                 }
             }
-            for(int i = 0;i < imagenesDeMas.size();i++){
-                for (int j = 0;j < imageFiles.length; j++){
-                    if(imagenesDeMas.get(i).equals(imageFiles[j].getAbsoluteFile().getName())){
-                        File imagenBorrar = new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\"+imageFiles[j].getAbsoluteFile().getName());
-                        imagenBorrar.delete();
+            for(int i = 0;i < imagenesDeMas.size();i++){//Leemos la cantidad de imagenes en imagenesDeMas
+                for (int j = 0;j < imageFiles.length; j++){//Leemos las imagenes de la carpeta
+                    if(imagenesDeMas.get(i).equals(imageFiles[j].getAbsoluteFile().getName())){//Si la imagen actual es equivalente a cualquiera de la carpeta
+                        File imagenBorrar = new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\"+imageFiles[j].getAbsoluteFile().getName());//Hacemos una variable File de esa imagen
+                        imagenBorrar.delete();//Borramos la imagen de la carpeta
                     }
                 }
             }

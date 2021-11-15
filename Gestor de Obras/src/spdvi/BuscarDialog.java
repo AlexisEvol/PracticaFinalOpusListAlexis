@@ -19,6 +19,9 @@ public class BuscarDialog extends javax.swing.JDialog {
 
     
     MainForm mainF;
+    boolean existeRegistro = false;
+
+    
        public BuscarDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -93,15 +96,25 @@ public class BuscarDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-        for (Obra o: mainF.getLista()) {
-            if (o.getRegistre().equals(txtRegistro.getText())) {
-                mainF.setRegistroNombre(txtRegistro.getText());
+            // TODO add your handling code here:
+        for (Obra o: mainF.getLista()) {//Hacemos un for para recorrer todos los valores del ArrayList "lista"
+            if (o.getRegistre().equals(txtRegistro.getText())) {//Si el registro de la posición de lista coincide con el que se ha escrito
+                mainF.setRegistroNombre(txtRegistro.getText());//Le damos ese valor a la variable registroNombre con lo que hemos escrito
+                existeRegistro = true;
+                this.setVisible(false);
             }
-        }
-        this.setVisible(false);
+            else{
+                existeRegistro = false;
+                System.out.println("Error, obra no encontrada");
+                //Aquí pondré un lbl que tendrá el texto anterior
+            }
+        }   
     }//GEN-LAST:event_btnBuscarActionPerformed
-
+    
+    public boolean getEstadoRegistro(){
+        return existeRegistro;
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

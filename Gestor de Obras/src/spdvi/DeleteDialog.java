@@ -82,21 +82,22 @@ public class DeleteDialog extends javax.swing.JDialog {
     private void jcbSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbSelectorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jcbSelectorActionPerformed
-
+    
+    //Boton para borrar el valor seleccionado
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
         // TODO add your handling code here:
         
-        Obra objeto = (Obra) jcbSelector.getSelectedItem();        
-        mainF.getLista().remove(objeto);
-        this.setVisible(false);
-        mainF.actualizador();        
+        Obra objeto = (Obra) jcbSelector.getSelectedItem();//creamos un objeto Obra del valor seleccionado    
+        mainF.getLista().remove(objeto);//Quitamos del ArrayList "lista" el valor seleccionado
+        this.setVisible(false);//cerramos la ventana
+        mainF.actualizador();//Actualizamos la lista        
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         
-        DefaultComboBoxModel listaObras = new DefaultComboBoxModel();
-        for(Obra o: mainF.getLista()) {
+        DefaultComboBoxModel listaObras = new DefaultComboBoxModel();//DefaultModel de la funcion ComboBox
+        for(Obra o: mainF.getLista()) {//Introduciremos mediante un for los valores del ArrayList "lista"
             listaObras.addElement(o);
         }
         jcbSelector.setModel(listaObras);

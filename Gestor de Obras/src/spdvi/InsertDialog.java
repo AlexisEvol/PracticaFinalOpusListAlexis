@@ -21,7 +21,7 @@ public class InsertDialog extends javax.swing.JDialog {
     Gson gson = new Gson();
     JFileChooser fchImagenChooser;
     String path;
-    List imagenesDeMas = new ArrayList();
+    List imagenesDeMas = new ArrayList();//ArrayList para saber cuales son las imagenes repetidas
 
     
     public InsertDialog(java.awt.Frame parent, boolean modal) {
@@ -179,39 +179,37 @@ public class InsertDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Boton que usaremos para insertar una obra al ArrayList "lista" y guardar una imagen dentro de la carpeta images
     private void btnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertActionPerformed
         try {
             
-            File imagesFolder = new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images");
-            File[] imageFiles = imagesFolder.listFiles();
+            File imagesFolder = new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images");//path de la carpeta images
+            File[] imageFiles = imagesFolder.listFiles();//Variable para leer y introducir dentro de un array las imagenes de la carpeta images
         
-            for(int i = 0; i < imageFiles.length;i++){
+            for(int i = 0; i < imageFiles.length;i++){//for para añadir las imagenes de la carpeta images dentro de un ArrayList imagenesDeMas
                 imagenesDeMas.add(imageFiles[i].getAbsoluteFile().getName());
             }
             
-            String path = fchImagenChooser.getSelectedFile().getAbsolutePath();
-            BufferedImage imagen = ImageIO.read(new File(path));
+            String path = fchImagenChooser.getSelectedFile().getAbsolutePath();//El path de la imagen seleccionada
+            BufferedImage imagen = ImageIO.read(new File(path));//BufferedImage de la imagen seleccionada
 
-            Obra obraNueva = new Obra (txtRegistro.getText(), txtTitulo.getText(), txtYear.getText(), txtFormato.getText(), txtAutor.getText(), txtImagen.getText());
+            Obra obraNueva = new Obra (txtRegistro.getText(), txtTitulo.getText(), txtYear.getText(), txtFormato.getText(), txtAutor.getText(), txtImagen.getText());//Nuevo objeto Obra con los valores escritos
             
-            if(imagenesDeMas.contains(obraNueva.getImagen())){
+            if(imagenesDeMas.contains(obraNueva.getImagen())){//Si la imagen seleccionada ya está en la carpeta images
                 lblAviso.setText("Error! La imagen ya existe, cambia el nombre.");
             }
-            else{
-                mainF.addToLista(obraNueva);
+            else{//Si no lo está
+                mainF.addToLista(obraNueva);//Añadimos el nuevo objeto Obra al ArrayList "lista"
                 this.setVisible(false);
-                ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + obraNueva.getImagen()));
+                ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + obraNueva.getImagen()));//Guardamos la imagen en la carpeta images
                 mainF.actualizador();
-            }
-            
-
-            
+            } 
         } 
         catch (IOException ex) {
             Logger.getLogger(InsertDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnInsertActionPerformed
-
+    //Cargamos la imagen seleccionada en el fileChooser
     private void btnCargarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarImagenActionPerformed
         // TODO add your handling code here:
         

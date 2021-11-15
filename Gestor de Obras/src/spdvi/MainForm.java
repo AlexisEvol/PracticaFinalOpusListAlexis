@@ -26,28 +26,28 @@ import javax.swing.JList;
 
 
 public class MainForm extends javax.swing.JFrame {
-    private static final java.lang.reflect.Type LIST_OF_OBRA_TYPE = new TypeToken<List<Obra>>() {}.getType();
-    private ArrayList<Obra> lista = new ArrayList<>();
-    private List imagenesDeMas = new ArrayList();
-    private JList<Obra> lstObras;
-    final static String imagesFolder = System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\";
+    private static final java.lang.reflect.Type LIST_OF_OBRA_TYPE = new TypeToken<List<Obra>>() {}.getType();//???
+    private ArrayList<Obra> lista = new ArrayList<>();//ArrayList en el que almacenaremos los objetos de Obra
+    private List imagenesDeMas = new ArrayList();//ArrayList en el que almacenaremos las imagenes que sobran para posteriormente borrarlas
+    private JList<Obra> lstObras;//Jlist de obras en el que meteremos valores
+    final static String imagesFolder = System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\";//String que nos da el path de las imagenes sin el nombre de estas
     ChangeDialogUpdate cdu;
     BuscarDialog bd;
     String NombreRegistro = "";//String que usaré para poder pasar el registro de BuscaDialog a ChangeDialogUpdate
 
     
-    public MainForm() {
+    public MainForm() {//Constructor de MainForm
         initComponents();
         
         lstObras = new JList<Obra>();
-        jspObras.setViewportView(lstObras);
-        lstObras.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+        jspObras.setViewportView(lstObras);//Crea una ventana para el scroll para indicar en cual lista va ha estar trabajando.
+        lstObras.addListSelectionListener(new javax.swing.event.ListSelectionListener() {//Creamos un Listener del valor que estamos seleccionando gracias al ValueChange del Jlist lstObras.
         public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
             lstObrasValueChanged(evt);
             }
         });
         
-        lstObras.addMouseListener(new java.awt.event.MouseAdapter(){
+        lstObras.addMouseListener(new java.awt.event.MouseAdapter(){//Añadimos un MouseListener al que le pasamos un metodo que cuenta la cantidad de clicks realizados
             public void mouseClicked(java.awt.event.MouseEvent evt){
                 lstObrasMouse(evt);
             }
@@ -222,50 +222,53 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void lstObrasValueChanged(javax.swing.event.ListSelectionEvent evt) {//Usamos este metodo para poder cambiar las imagenes a medida que vayamos cambiado valores en la lista
-            Obra selectedUser = lstObras.getSelectedValue();
-            if (selectedUser != null) {
-                for (Obra o: lista) {
-                    if (o.getRegistre().equals(selectedUser.getRegistre())) {
+            Obra selectedUser = lstObras.getSelectedValue();//Cogemos el valor seleccionado
+            if (selectedUser != null) {//Si el valor no es nulo
+                for (Obra o: lista) {//Recorremos el ArrayList de Obras "lista"
+                    if (o.getRegistre().equals(selectedUser.getRegistre())) {//Si el registro de la posición de la lista es igual al del valor seleccionado.
                         try {
-                            BufferedImage bufferedImage = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));
-                            ImageIcon icon = resizeImageIcon(bufferedImage, lblImagen.getWidth(), lblImagen.getHeight());
-                            lblImagen.setIcon(icon);
+                            BufferedImage bufferedImage = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));//Creamos un buffered reader de la imagen perteneciente a la obra seleccionada
+                            ImageIcon icon = resizeImageIcon(bufferedImage, lblImagen.getWidth(), lblImagen.getHeight());//Hacemos un resize de la imagen seleccionada
+                            lblImagen.setIcon(icon);//Setteamos el lbl con la imagen de la obra que seleccionamos
                         }
                         catch (IOException ioe) {
                             ioe.printStackTrace();
                         }
-                }
-            }            
-        }
+                    }
+                }            
+            }
     }
     
+    //Metodo que ejecutará cada vez que abramos el programa la lectura del archivo json y rellenando las listas con su contenido
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         Gson gson = new Gson();
         try {
-            JsonReader reader = new JsonReader(new FileReader(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json"));
-            ArrayList<Obra> obras = gson.fromJson(reader, LIST_OF_OBRA_TYPE);
-            for (Obra o: obras) {
+            JsonReader reader = new JsonReader(new FileReader(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json"));//Variable JsonReader que recibirá la dirección del archivo que debe leer
+            ArrayList<Obra> obras = gson.fromJson(reader, LIST_OF_OBRA_TYPE);//ArrayList de Obra que recibe la orden de leer el archivo json mediante un gson.fromJson("Variable que lee", ???)
+            
+            for (Obra o: obras) {//for de la cantidad de obras almacenadas en el ArrayList que lee del fichero el cual añadirá dentro del nuevo ArrayList "lista" esos valores.
                 lista.add(o);
             }
             
-            DefaultListModel<Obra> listaObras = new DefaultListModel<>();
+            DefaultListModel<Obra> listaObras = new DefaultListModel<>();//DeafultListModel de Obra que añadirá los valores del ArrayList "lista"
             for(Obra o: lista) {
                 listaObras.addElement(o);
             }
-            lstObras.setModel(listaObras);
+            lstObras.setModel(listaObras);//Le metemos el modelo
             }
             catch (FileNotFoundException fnfe) {
                 fnfe.printStackTrace();
             }
     }//GEN-LAST:event_formWindowOpened
 
+    //Funcion del boton guardar el cual escribirá dentro del documento json lo que haya dentro del ArrayList "lista"
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        try (Writer writer = new FileWriter(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json")) {
+        try (Writer writer = new FileWriter(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\data\\obres.json")) {//Le pasamos un Writer que escribirá en el json
             
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(lista, writer);
+            Gson gson = new GsonBuilder().create();//Creamos GsonBuilder para poder pasarl los objetos java a gson
+            gson.toJson(lista, writer);//Hacemos to Json pasandole los valores almacenados en el ArrayList "lista" y luego un writer para poder escribir esos valores en el archivo json
         
         } catch (IOException ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -372,9 +375,12 @@ public class MainForm extends javax.swing.JFrame {
         }
         
         public void changeDialog(){//Lo usamos para abrir ChangeDialogUpdate
-            cdu = new ChangeDialogUpdate(this, true);
-            cdu.setVisible(true);
+            if(bd.getEstadoRegistro() == true){
+                cdu = new ChangeDialogUpdate(this, true);
+                cdu.setVisible(true);
+            }
         }
+        
         public String getRegistroPasa(){//Getter del Registro que busquemos en BuscarDialog
             return NombreRegistro;
         }

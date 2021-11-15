@@ -20,7 +20,7 @@ import javax.swing.JFileChooser;
  *
  * @author alexi
  */
-public class ChangeDialogUpdate extends javax.swing.JDialog {
+public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para cuando pulsamos el boton
 
     MainForm mainF;
     Gson gson = new Gson();
@@ -180,6 +180,7 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Cargamos la imagen desde un fileChooser
     private void btnCargarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarImagenActionPerformed
         // TODO add your handling code here:
         
@@ -199,6 +200,7 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnCargarImagenActionPerformed
 
+    //Cambiamos los valores de la obra que equivale al registro escrito en BuscarDialog
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         
         for (Obra o: mainF.getLista()) {
@@ -221,9 +223,10 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {
         mainF.actualizador();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    //Cuando la ventana se abre settearemos el txtRegistro con el valor escrito en BuscarDialog y posteriormente si coincide con alguno, sacará la información de este objeto en los txt
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         
-        txtRegistro.setText(mainF.getRegistroPasa());        
+        txtRegistro.setText(mainF.getRegistroPasa());//Getter del valor que hemos escrito en BuscarDialog        
         try {
         for (Obra o: mainF.getLista()) {
             if (o.getRegistre().equals(txtRegistro.getText())) {
