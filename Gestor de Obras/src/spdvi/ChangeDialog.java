@@ -203,22 +203,25 @@ public class ChangeDialog extends javax.swing.JDialog {//Clase que se activa cua
     //Funcion del boton update el cual actualizará la información del objeto de la lista seleccionado
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         
-        for (Obra o: mainF.getLista()) {//recorremos la lista
-            if (o.getRegistre().equals(txtRegistro.getText())) {//si el registro de la posición de la lista es igual al que está en el txt
-                try {
-                    //Añadiremos los nuevos valores al objeto que corresponda con el seleccionado previamente
-                    o.setTitol(txtTitulo.getText());
-                    o.setAny(txtYear.getText());
-                    o.setFormat(txtFormato.getText());
-                    o.setAutor(txtAutor.getText());
-                    o.setImagen(txtImagen.getText());
-                    BufferedImage imagen = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\"+txtImagen.getText()));//Creamos un BufferedImage de la imagen seleccionada mediante su nombre
-                    ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));//Guardaremos la imagen del BufferedImage dentro de la carpeta images con el nombre que le corresponde
-                } catch (IOException ex) {
-                    Logger.getLogger(ChangeDialog.class.getName()).log(Level.SEVERE, null, ex);
-                }
+    String path = fchImagenChooser.getSelectedFile().getAbsolutePath();//El path de la imagen seleccionada
+    
+    for (Obra o: mainF.getLista()) {//recorremos la lista
+        if (o.getRegistre().equals(txtRegistro.getText())) {//si el registro de la posición de la lista es igual al que está en el txt
+            try {
+                                   
+                //Añadiremos los nuevos valores al objeto que corresponda con el seleccionado previamente
+                o.setTitol(txtTitulo.getText());
+                o.setAny(txtYear.getText());
+                o.setFormat(txtFormato.getText());
+                o.setAutor(txtAutor.getText());
+                o.setImagen(txtImagen.getText());
+                BufferedImage imagen = ImageIO.read(new File(path));
+                ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));//Guardaremos la imagen del BufferedImage dentro de la carpeta images con el nombre que le corresponde
+            } catch (IOException ex) {
+                Logger.getLogger(ChangeDialog.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
         this.setVisible(false);
         mainF.actualizador();//Actualizamos la lista
     }//GEN-LAST:event_btnUpdateActionPerformed
