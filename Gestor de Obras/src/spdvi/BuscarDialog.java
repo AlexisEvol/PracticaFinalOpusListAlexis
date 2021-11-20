@@ -41,6 +41,7 @@ public class BuscarDialog extends javax.swing.JDialog {
         lblRegistro = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
+        lblAviso = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -57,6 +58,8 @@ public class BuscarDialog extends javax.swing.JDialog {
                 btnBuscarActionPerformed(evt);
             }
         });
+
+        lblAviso.setForeground(new java.awt.Color(255, 51, 51));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,7 +78,9 @@ public class BuscarDialog extends javax.swing.JDialog {
                 .addContainerGap(116, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnBuscar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAviso)
+                    .addComponent(btnBuscar))
                 .addGap(157, 157, 157))
         );
         layout.setVerticalGroup(
@@ -87,7 +92,9 @@ public class BuscarDialog extends javax.swing.JDialog {
                 .addComponent(lblRegistro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addComponent(lblAviso)
+                .addGap(41, 41, 41)
                 .addComponent(btnBuscar)
                 .addContainerGap())
         );
@@ -105,8 +112,7 @@ public class BuscarDialog extends javax.swing.JDialog {
             }
             else{
                 existeRegistro = false;
-                System.out.println("Error, obra no encontrada");
-                //Aquí pondré un lbl que tendrá el texto anterior
+                lblAviso.setText("No existe");
             }
         }   
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -156,6 +162,7 @@ public class BuscarDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JLabel lblAviso;
     private javax.swing.JLabel lblRegistro;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTextField txtRegistro;
