@@ -25,6 +25,7 @@ public class ChangeDialog extends javax.swing.JDialog {//Clase que se activa cua
     MainForm mainF;//Variable del MainForm
     Gson gson = new Gson();
     JFileChooser fchImagenChooser;//Variable para el fileChooser
+    String nombre;
     
     public ChangeDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -184,18 +185,28 @@ public class ChangeDialog extends javax.swing.JDialog {//Clase que se activa cua
     private void btnCargarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarImagenActionPerformed
         // TODO add your handling code here:
         
-        int result = fchImagenChooser.showOpenDialog(this);//Enseña una ventana de buscador de archivos
-        String nombre = fchImagenChooser.getSelectedFile().getName();//String con el nombre de la imagen seleccionada desde el buscador de archivos
-        if (result == JFileChooser.APPROVE_OPTION) {//Si la variable result es equivalente a seleccionar del fileChooser
+        int result = fchImagenChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                BufferedImage bufferedImage = ImageIO.read(new File(fchImagenChooser.getSelectedFile().getAbsolutePath()));//Creamos un BufferedImage de la imagen seleccionado mediante su absolute path
-                ImageIcon icon = mainF.resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());//Le hacemos un resize a esta imagen
-                lblPerfil.setIcon(icon);//setteamos el lbl con la imagen seleccionada
-                txtImagen.setText(nombre);//setteamos el txt de la imagen con su nombre
-
+                BufferedImage bufferedImage = ImageIO.read(new File(fchImagenChooser.getSelectedFile().getAbsolutePath()));
+                ImageIcon icon = mainF.resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());
+                nombre = fchImagenChooser.getSelectedFile().getAbsolutePath();
+                lblPerfil.setIcon(icon);
+                txtImagen.setText(fchImagenChooser.getSelectedFile().getName());
             }
             catch (IOException ioe) {
                 ioe.printStackTrace();
+            }
+        }
+        else if(result == JFileChooser.CANCEL_OPTION){
+            try {
+                BufferedImage bufferedImage = ImageIO.read(new File("src\\spdvi\\ImagenesDefecto\\Defecto.jpg"));
+                ImageIcon icon = mainF.resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());
+                nombre = "src\\spdvi\\ImagenesDefecto\\Defecto.jpg";
+                lblPerfil.setIcon(icon);
+                txtImagen.setText("Defecto.jpg");
+            } catch (IOException ex) {
+                Logger.getLogger(ChangeDialogUpdate.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnCargarImagenActionPerformed
@@ -203,27 +214,24 @@ public class ChangeDialog extends javax.swing.JDialog {//Clase que se activa cua
     //Funcion del boton update el cual actualizará la información del objeto de la lista seleccionado
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         
-    String path = fchImagenChooser.getSelectedFile().getAbsolutePath();//El path de la imagen seleccionada
-    
-    for (Obra o: mainF.getLista()) {//recorremos la lista
-        if (o.getRegistre().equals(txtRegistro.getText())) {//si el registro de la posición de la lista es igual al que está en el txt
-            try {
-                                   
-                //Añadiremos los nuevos valores al objeto que corresponda con el seleccionado previamente
-                o.setTitol(txtTitulo.getText());
-                o.setAny(txtYear.getText());
-                o.setFormat(txtFormato.getText());
-                o.setAutor(txtAutor.getText());
-                o.setImagen(txtImagen.getText());
-                BufferedImage imagen = ImageIO.read(new File(path));
-                ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));//Guardaremos la imagen del BufferedImage dentro de la carpeta images con el nombre que le corresponde
-            } catch (IOException ex) {
-                Logger.getLogger(ChangeDialog.class.getName()).log(Level.SEVERE, null, ex);
+        for (Obra o: mainF.getLista()) {
+            if (o.getRegistre().equals(txtRegistro.getText())) {
+                try {
+                    o.setTitol(txtTitulo.getText());
+                    o.setAny(txtYear.getText());
+                    o.setFormat(txtFormato.getText());
+                    o.setAutor(txtAutor.getText());
+                    o.setImagen(txtImagen.getText());
+                    BufferedImage imagen = ImageIO.read(new File(nombre));
+                    ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));
+                } 
+                catch (IOException ex) {
+                    Logger.getLogger(ChangeDialogUpdate.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
-    }
         this.setVisible(false);
-        mainF.actualizador();//Actualizamos la lista
+        mainF.actualizador();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     //Cuando se abre la ventana se cargan en el txt los valores de la obra que hemos seleccionado

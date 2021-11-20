@@ -25,6 +25,7 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
     MainForm mainF;
     Gson gson = new Gson();
     JFileChooser fchImagenChooser;
+    String nombre;
     
     public ChangeDialogUpdate(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -185,17 +186,27 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
         // TODO add your handling code here:
         
         int result = fchImagenChooser.showOpenDialog(this);
-        String nombre = fchImagenChooser.getSelectedFile().getName();
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 BufferedImage bufferedImage = ImageIO.read(new File(fchImagenChooser.getSelectedFile().getAbsolutePath()));
                 ImageIcon icon = mainF.resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());
+                nombre = fchImagenChooser.getSelectedFile().getAbsolutePath();
                 lblPerfil.setIcon(icon);
-                txtImagen.setText(nombre);
-
+                txtImagen.setText(fchImagenChooser.getSelectedFile().getName());
             }
             catch (IOException ioe) {
                 ioe.printStackTrace();
+            }
+        }
+        else if(result == JFileChooser.CANCEL_OPTION){
+            try {
+                BufferedImage bufferedImage = ImageIO.read(new File("src\\spdvi\\ImagenesDefecto\\Defecto.jpg"));
+                ImageIcon icon = mainF.resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());
+                nombre = "src\\spdvi\\ImagenesDefecto\\Defecto.jpg";
+                lblPerfil.setIcon(icon);
+                txtImagen.setText("Defecto.jpg");
+            } catch (IOException ex) {
+                Logger.getLogger(ChangeDialogUpdate.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnCargarImagenActionPerformed
@@ -211,7 +222,7 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
                     o.setFormat(txtFormato.getText());
                     o.setAutor(txtAutor.getText());
                     o.setImagen(txtImagen.getText());
-                    BufferedImage imagen = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\"+txtImagen.getText()));
+                    BufferedImage imagen = ImageIO.read(new File(nombre));
                     ImageIO.write(imagen, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));
                 } 
                 catch (IOException ex) {
