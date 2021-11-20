@@ -203,7 +203,7 @@ public class InsertDialog extends javax.swing.JDialog {
                         mainF.addToLista(obraNueva);//Añadimos el nuevo objeto Obra al ArrayList "lista"
                         this.setVisible(false);
                         if (obraNueva.getImagen().equals("")){
-                            BufferedImage imagenDefecto = ImageIO.read(new File(System.getProperty("user.home") + "\\Documents\\NetBeansProjects\\PracticaFinalOpusListAlexis-main\\Gestor de Obras\\src\\spdvi\\ImagenesDefecto\\Defecto.jpg"));//BufferedImage de la imagen seleccionada
+                            BufferedImage imagenDefecto = ImageIO.read(new File("src\\spdvi\\ImagenesDefecto\\Defecto.jpg"));//BufferedImage de la imagen seleccionada
                             ImageIO.write(imagenDefecto, "jpg", new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\Defecto.jpg"));//Guardamos la imagen en la carpeta images
                             obraNueva.setImagen("Defecto.jpg");
                         }
