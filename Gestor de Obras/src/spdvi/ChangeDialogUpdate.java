@@ -55,6 +55,7 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
         lblPerfil = new javax.swing.JLabel();
         btnCargarImagen = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
+        btnQuitar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -112,6 +113,14 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
             }
         });
 
+        btnQuitar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnQuitar.setText("NoImagen");
+        btnQuitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -136,11 +145,13 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(lblPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnUpdate)
-                        .addGap(16, 16, 16)
+                        .addGap(18, 18, 18)
                         .addComponent(btnCargarImagen)
-                        .addGap(83, 83, 83))))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnQuitar)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,7 +185,8 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCargarImagen)
-                    .addComponent(btnUpdate))
+                    .addComponent(btnUpdate)
+                    .addComponent(btnQuitar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -198,7 +210,7 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
                 ioe.printStackTrace();
             }
         }
-        else if(result == JFileChooser.CANCEL_OPTION){
+        /*else if(result == JFileChooser.CANCEL_OPTION){
             try {
                 BufferedImage bufferedImage = ImageIO.read(new File("src\\spdvi\\ImagenesDefecto\\Defecto.jpg"));
                 ImageIcon icon = mainF.resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());
@@ -208,7 +220,7 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
             } catch (IOException ex) {
                 Logger.getLogger(ChangeDialogUpdate.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        }*/
     }//GEN-LAST:event_btnCargarImagenActionPerformed
 
     //Cambiamos los valores de la obra que equivale al registro escrito en BuscarDialog
@@ -257,6 +269,21 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
             Logger.getLogger(ChangeDialogUpdate.class.getName()).log(Level.SEVERE, null, ex);
         }    
     }//GEN-LAST:event_formWindowOpened
+
+    private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
+        // TODO add your handling code here:
+            try {
+                BufferedImage bufferedImage = ImageIO.read(new File("src\\spdvi\\ImagenesDefecto\\Defecto.jpg"));
+                ImageIcon icon = mainF.resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());
+                nombre = "src\\spdvi\\ImagenesDefecto\\Defecto.jpg";
+                lblPerfil.setIcon(icon);
+                txtImagen.setText("Defecto.jpg");
+            } 
+            catch (IOException ex) {
+                Logger.getLogger(ChangeDialogUpdate.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+    }//GEN-LAST:event_btnQuitarActionPerformed
         
     public ImageIcon resizeImageIcon (BufferedImage originalImage, int desiredWidth, int desiredHeight) {
         int newHeight = 0;    
@@ -321,6 +348,7 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCargarImagen;
+    private javax.swing.JButton btnQuitar;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblFormato;
