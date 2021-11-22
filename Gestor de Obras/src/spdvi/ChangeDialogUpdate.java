@@ -259,6 +259,7 @@ public class ChangeDialogUpdate extends javax.swing.JDialog {//Clase update para
                 txtAutor.setText(o.getAutor());
                 txtTitulo.setText(o.getTitol());
                 txtFormato.setText(o.getFormat());
+                nombre = System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + txtImagen.getText();
                 BufferedImage bufferedImage = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + o.getImagen()));
                 ImageIcon icon = resizeImageIcon(bufferedImage, lblPerfil.getWidth(), lblPerfil.getHeight());
                 lblPerfil.setIcon(icon);

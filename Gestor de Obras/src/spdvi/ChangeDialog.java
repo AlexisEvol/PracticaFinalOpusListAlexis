@@ -30,7 +30,6 @@ public class ChangeDialog extends javax.swing.JDialog {//Clase que se activa cua
     public ChangeDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
         fchImagenChooser = new JFileChooser();
         mainF = (MainForm) this.getParent();//Le damos los valores ya recolectados en el MainForm a la variable MainF
     }
@@ -249,6 +248,7 @@ public class ChangeDialog extends javax.swing.JDialog {//Clase que se activa cua
     //Cuando se abre la ventana se cargan en el txt los valores de la obra que hemos seleccionado
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
+            
             // TODO add your handling code here:
             //rellenamos los txt con los valores del objeto seleccionado
             txtImagen.setText(mainF.getSelectedObra().getImagen());
@@ -257,6 +257,7 @@ public class ChangeDialog extends javax.swing.JDialog {//Clase que se activa cua
             txtAutor.setText(mainF.getSelectedObra().getAutor());
             txtTitulo.setText(mainF.getSelectedObra().getTitol());
             txtFormato.setText(mainF.getSelectedObra().getFormat());
+            nombre = System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + txtImagen.getText();
 
             //Como otras veces, hacemos un BufferedImage de la imagen del objeto seleccionado y luego la setteamos en el lbl.
             BufferedImage bufferedImage = ImageIO.read(new File(System.getProperty("user.home") + "\\AppData\\Local\\OpusList\\images\\" + mainF.getSelectedObra().getImagen()));
